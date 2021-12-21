@@ -133,10 +133,16 @@ category_id_to_name = {
 84:'gate1'}
 
 # transforms = A.Compose([A.Resize(416, 416)], bbox_params=A.BboxParams(format="yolo"))
+# 640  480 
 transforms = A.Compose([
     # A.Resize(416, 416),
     # A.RandomCrop(width=256, height=256),
-    A.RandomBrightnessContrast(brightness_limit=1, contrast_limit=1,p=0.9)],
+    A.RandomSizedBBoxSafeCrop(height = 600,width = 800,erosion_rate =  0.0, interpolation = 1,p=1),
+    # A.RandomSizedBBoxSafeCrop(height = 60,width = 80,erosion_rate =  0.0, interpolation = 1,p=1),
+    # A.UnsharpMask (blur_limit=(3, 7), sigma_limit=0.0, alpha=(0.2, 0.5), threshold=10, always_apply=False, p=1),
+    A.RandomToneCurve (scale=0.5, always_apply=False, p=1),
+    A.RandomBrightnessContrast(brightness_limit=0.5, contrast_limit=0.5,p=0.9)
+    ],
 bbox_params=A.BboxParams(format="yolo"))
 
 

@@ -1,0 +1,4 @@
+name: test
+channels:
+  - defaults
+prefix: /home/watson/anaconda3/envs/test
