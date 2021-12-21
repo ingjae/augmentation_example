@@ -12,3 +12,7 @@ conda env export -n test > environment.yaml
 ```
 conda env create -f environment.yaml
 ```
+
+pip3 install numpy  
+pip3 install scikit-build  
+pip3 install -U albumentation  
