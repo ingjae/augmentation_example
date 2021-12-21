@@ -6,9 +6,9 @@ augmentation_example
 2. 복사     (offline)
 
 ```
-conda env export -n test > environment.yml
+conda env export -n test > environment.yaml
 ```
 
 ```
-conda env create -f environment.yml
+conda env create -f environment.yaml
 ```
