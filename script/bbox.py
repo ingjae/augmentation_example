@@ -3,13 +3,14 @@ import albumentations as A
 import random
 import cv2 
 import matplotlib.pyplot as plt
+import names
 BOX_COLOR = (255, 0, 0) # Red
 TEXT_COLOR = (255, 255, 255) # White
 
 def draw_bboxes(img, bboxes):
     height, width = img.shape[:2]
     for x, y, w, h, label in bboxes:
-        class_name = category_id_to_name[label]
+        class_name = names.category_id_to_name[label]
         x *= width
         y *= height
         w *= width
@@ -32,108 +33,25 @@ def draw_bboxes(img, bboxes):
             color=TEXT_COLOR, 
             lineType=cv2.LINE_AA,
         )
+def read_image():
+    pass
+def read_bboxes():
+    pass
+
+image = plt.imread('../dataset/IMG_1393.JPG')
+bboxes = [[0.278081,0.547082,0.038222,0.049072,0],
+        [0.441108, 0.511273, 0.038222, 0.057029,8],
+        [0.505070, 0.511273, 0.041342, 0.057029,18],
+        [0.567473, 0.509947, 0.039782, 0.059682,20],
+        [0.631825, 0.509947, 0.042122, 0.059682,22],
+        [0.632995, 0.377321, 0.041342, 0.054377,24],
+        [0.697738, 0.377984, 0.041342, 0.058355,26],
+        [0.764431, 0.376658, 0.045242, 0.061008,28]]
+
 
 random.seed(0)
 np.random.seed(0)
-image = plt.imread('./IMG_1393.JPG')
-bboxes = [[0.278081,0.547082,0.038222,0.049072,0]
-,[0.441108, 0.511273, 0.038222, 0.057029,8]
-,[0.505070, 0.511273, 0.041342, 0.057029,18]
-,[0.567473, 0.509947, 0.039782, 0.059682,20]
-,[0.631825, 0.509947, 0.042122, 0.059682,22]
-,[0.632995, 0.377321, 0.041342, 0.054377,24]
-,[0.697738, 0.377984, 0.041342, 0.058355,26]
-,[0.764431, 0.376658, 0.045242, 0.061008,28]]
-# category_id_to_name = {0:'open',8:'B1F'}
-category_id_to_name = {
-0:'open',  
-1:'open_on',
-2:'close',
-3:'close_on',
-4:'up',
-5:'down',
-6:'up_on',
-7:'down_on',
-8:'B1F',
-9:'B1F_on',
-10:'B2F',
-11:'B2F_on',
-12:'B3F',
-13:'B3F_on',
-14:'B4F',
-15:'B4F_on',
-16:'B5F',
-17:'B5F_on',
-18:'1F',
-19:'1F_on',
-20:'2F',
-21:'2F_on',
-22:'3F',
-23:'3F_on',
-24:'4F',
-25:'4F_on',
-26:'5F',
-27:'5F_on',
-28:'6F',
-29:'6F_on',
-30:'7F',
-31:'7F_on',
-32:'8F',
-33:'8F_on',
-34:'9F',
-35:'9F_on',
-36:'10F',
-37:'10F_on',
-38:'11F',
-39:'11F_on',
-40:'12F',
-41:'12F_on',
-42:'13F',
-43:'13F_on',
-44:'14F',
-45:'14F_on',
-46:'15F',
-47:'15F_on',
-48:'16F',
-49:'16F_on',
-50:'17F',
-51:'17F_on',
-52:'18F',
-53:'18F_on',
-54:'19F',
-55:'19F_on',
-56:'20F',
-57:'20F_on',
-58:'21F',
-59:'21F_on',
-60:'22F',
-61:'22F_on',
-62:'23F',
-63:'23F_on',
-64:'24F',
-65:'24F_on',
-66:'25F',
-67:'25F_on',
-68:'26F',
-69:'26F_on',
-70:'27F',
-71:'27F_on',
-72:'28F',
-73:'28F_on',
-74:'29F',
-75:'29F_on',
-76:'30F',
-77:'30F_on',
-78:'person',
-79:'bicycle',
-80:'car',
-81:'motorcycle',
-82:'truck',
-83:'dog',
-84:'gate1'}
 
-# transforms = A.Compose([A.Resize(416, 416)], bbox_params=A.BboxParams(format="yolo"))
-# 640  480 
 transforms = A.Compose([
     # A.Resize(416, 416),
     # A.RandomCrop(width=256, height=256),
@@ -145,7 +63,8 @@ transforms = A.Compose([
     ],
 bbox_params=A.BboxParams(format="yolo"))
 
-
+def visualize_bboxes():
+    pass
 res1 = transforms(image=image, bboxes=bboxes)
 res2 = transforms(image=image, bboxes=bboxes)
 res3 = transforms(image=image, bboxes=bboxes)
