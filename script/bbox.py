@@ -4,6 +4,7 @@ import random
 import cv2 
 import matplotlib.pyplot as plt
 import names
+import dataset
 BOX_COLOR = (255, 0, 0) # Red
 TEXT_COLOR = (255, 255, 255) # White
 
@@ -37,59 +38,58 @@ def read_image():
     pass
 def read_bboxes():
     pass
-
-image = plt.imread('../dataset/IMG_1393.JPG')
-bboxes = [[0.278081,0.547082,0.038222,0.049072,0],
-        [0.441108, 0.511273, 0.038222, 0.057029,8],
-        [0.505070, 0.511273, 0.041342, 0.057029,18],
-        [0.567473, 0.509947, 0.039782, 0.059682,20],
-        [0.631825, 0.509947, 0.042122, 0.059682,22],
-        [0.632995, 0.377321, 0.041342, 0.054377,24],
-        [0.697738, 0.377984, 0.041342, 0.058355,26],
-        [0.764431, 0.376658, 0.045242, 0.061008,28]]
+def visualize_bboxes(grid_index,grid_title,image,bboxes):
+    plt.subplot(grid_index, title=grid_title)
+    draw_bboxes(image, bboxes)
+    plt.imshow(image, vmin=0, vmax=255)
 
 
-random.seed(0)
-np.random.seed(0)
+image = plt.imread(dataset.panel)
+bboxes = dataset.panel_label
+
+
+# random.seed(43)
+# np.random.seed(0)
 
 transforms = A.Compose([
-    # A.Resize(416, 416),
-    # A.RandomCrop(width=256, height=256),
-    A.RandomSizedBBoxSafeCrop(height = 600,width = 800,erosion_rate =  0.0, interpolation = 1,p=1),
-    # A.RandomSizedBBoxSafeCrop(height = 60,width = 80,erosion_rate =  0.0, interpolation = 1,p=1),
-    # A.UnsharpMask (blur_limit=(3, 7), sigma_limit=0.0, alpha=(0.2, 0.5), threshold=10, always_apply=False, p=1),
-    A.RandomToneCurve (scale=0.5, always_apply=False, p=1),
-    A.RandomBrightnessContrast(brightness_limit=0.5, contrast_limit=0.5,p=0.9)
-    ],
-bbox_params=A.BboxParams(format="yolo"))
+    A.OneOf([
+        A.RandomSizedBBoxSafeCrop(height = 480,width = 640,erosion_rate =  0.0, interpolation = 1,p=0.7),
+        A.RandomSizedBBoxSafeCrop(height = 960,width = 1280,erosion_rate =  0.0, interpolation = 1,p=0.7),
+        A.RandomSizedBBoxSafeCrop(height = 1440,width = 1920,erosion_rate =  0.0, interpolation = 1,p=0.7),
+        A.RandomSizedBBoxSafeCrop(height = 1920,width = 2560,erosion_rate =  0.0, interpolation = 1,p=0.7),
+        A.RandomSizedBBoxSafeCrop(height = 2400,width = 3200,erosion_rate =  0.0, interpolation = 1,p=0.7),
+    ]),
+    A.Rotate (limit=15, interpolation=1, border_mode=4, value=None, mask_value=None, always_apply=False, p=0.2),
+    A.HueSaturationValue(hue_shift_limit=15, sat_shift_limit=(0,15), val_shift_limit=15, always_apply=False, p=0.7),
+    A.Blur(blur_limit=2, always_apply=False, p=0.5),
+    A.CLAHE (clip_limit=1, tile_grid_size=(8, 8), always_apply=False, p=0.3),
+    A.RandomBrightnessContrast(brightness_limit=[-0.1,0.01], contrast_limit=[0,0.3],p=0.9),
+    A.RandomShadow (shadow_roi=(0.3, 0.3, 1, 1), num_shadows_lower=1, num_shadows_upper=3, shadow_dimension=5, always_apply=False, p=0.6),
+    A.RandomSunFlare (flare_roi=(0, 0, 1, 1), angle_lower=0, angle_upper=1, num_flare_circles_lower=0, num_flare_circles_upper=2, src_radius=50, src_color=(255, 255, 255), always_apply=False, p=0.5)
 
-def visualize_bboxes():
-    pass
+    ],
+    bbox_params=A.BboxParams(format="yolo"))
+    
 res1 = transforms(image=image, bboxes=bboxes)
 res2 = transforms(image=image, bboxes=bboxes)
 res3 = transforms(image=image, bboxes=bboxes)
 res4 = transforms(image=image, bboxes=bboxes)
-# print (res)
+res5 = transforms(image=image, bboxes=bboxes)
+res6 = transforms(image=image, bboxes=bboxes)
+res7 = transforms(image=image, bboxes=bboxes)
+res8 = transforms(image=image, bboxes=bboxes)
+res9 = transforms(image=image, bboxes=bboxes)
 
-plt.subplot(241, title="original")
-draw_bboxes(image, bboxes)
-plt.imshow(image, vmin=0, vmax=255)
-
-plt.subplot(245, title="result1")
-draw_bboxes(res1["image"], res1["bboxes"])
-plt.imshow(res1["image"], vmin=0, vmax=255)
-
-plt.subplot(246, title="result2")
-draw_bboxes(res2["image"], res2["bboxes"])
-plt.imshow(res2["image"], vmin=0, vmax=255)
-
-plt.subplot(247, title="result3")
-draw_bboxes(res3["image"], res3["bboxes"])
-plt.imshow(res3["image"], vmin=0, vmax=255)
-
-plt.subplot(248, title="result4")
-draw_bboxes(res4["image"], res4["bboxes"])
-plt.imshow(res4["image"], vmin=0, vmax=255)
+# visualize_bboxes(251,'original',image,bboxes)
+visualize_bboxes(252,'result1',res1['image'],res1['bboxes'])
+visualize_bboxes(253,'result1',res2['image'],res2['bboxes'])
+visualize_bboxes(254,'result1',res3['image'],res3['bboxes'])
+visualize_bboxes(255,'result1',res4['image'],res4['bboxes'])
+visualize_bboxes(256,'result1',res5['image'],res5['bboxes'])
+visualize_bboxes(257,'result1',res6['image'],res6['bboxes'])
+visualize_bboxes(258,'result1',res7['image'],res7['bboxes'])
+visualize_bboxes(259,'result1',res8['image'],res8['bboxes'])
+visualize_bboxes(251,'result1',res9['image'],res9['bboxes'])
 
 
 plt.show()
