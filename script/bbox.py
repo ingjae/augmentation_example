@@ -59,8 +59,8 @@ transforms = A.Compose([
         A.RandomSizedBBoxSafeCrop(height = 1920,width = 2560,erosion_rate =  0.0, interpolation = 1,p=0.7),
         A.RandomSizedBBoxSafeCrop(height = 2400,width = 3200,erosion_rate =  0.0, interpolation = 1,p=0.7),
     ]),
-    A.Rotate (limit=15, interpolation=1, border_mode=4, value=None, mask_value=None, always_apply=False, p=0.2),
-    A.HueSaturationValue(hue_shift_limit=15, sat_shift_limit=(0,15), val_shift_limit=15, always_apply=False, p=0.7),
+    A.Rotate (limit=15, interpolation=1, border_mode=1, value=None, mask_value=None, always_apply=False, p=0.2),
+    A.HueSaturationValue(hue_shift_limit=(-5,5), sat_shift_limit=(-5,15), val_shift_limit=(0,15), always_apply=False, p=0.7),
     A.Blur(blur_limit=2, always_apply=False, p=0.5),
     A.CLAHE (clip_limit=1, tile_grid_size=(8, 8), always_apply=False, p=0.3),
     A.RandomBrightnessContrast(brightness_limit=[-0.1,0.01], contrast_limit=[0,0.3],p=0.9),
@@ -79,7 +79,7 @@ res6 = transforms(image=image, bboxes=bboxes)
 res7 = transforms(image=image, bboxes=bboxes)
 res8 = transforms(image=image, bboxes=bboxes)
 res9 = transforms(image=image, bboxes=bboxes)
-
+# print (res1)
 # visualize_bboxes(251,'original',image,bboxes)
 visualize_bboxes(252,'result1',res1['image'],res1['bboxes'])
 visualize_bboxes(253,'result1',res2['image'],res2['bboxes'])
